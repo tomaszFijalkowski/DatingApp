@@ -19,9 +19,10 @@
       </a>
 
       <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item"><i class="fa fa-user"></i> Edit Profile</a>
+        <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user"></i> Edit Profile</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+        <a class="dropdown-item" (mouseover)="hover=true" (mouseleave)="hover=false" (click)="logout(); hover=false">
+            <span [ngStyle]="{color: hover==true  ? '#fff' : '#000' }"><i class="fa fa-sign-out"></i> Logout</span></a>
       </div>
     </div>
 
