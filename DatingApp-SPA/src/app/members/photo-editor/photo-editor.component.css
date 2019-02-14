@@ -1,0 +1,18 @@
+img.img-thumbnail {
+    height: 100px;
+    min-width: 100px !important;
+}
+
+.my-drop-zone {
+    border: dotted 5px #DEE2E6;
+    color: #888;
+}
+
+.nv-file-over {
+    border: dotted 5px #18bc9c;
+}
+
+input[type=file] {
+    width: 100px;
+    color: transparent;
+}
