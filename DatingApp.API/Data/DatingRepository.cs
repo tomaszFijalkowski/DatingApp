@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,7 +61,6 @@ namespace DatingApp.API.Data
             }
 
             if (!string.IsNullOrEmpty(userParams.OrderBy))
-            {
                 switch (userParams.OrderBy)
                 {
                     case "created":
@@ -72,19 +70,8 @@ namespace DatingApp.API.Data
                         users = users.OrderByDescending(u => u.LastActive);
                         break;
                 }
-            }
 
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
-        }
-
-        private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
-        {
-            var user = await context.Users.Include(x => x.Likers).Include(x => x.Liked)
-                .FirstOrDefaultAsync(u => u.Id == id);
-
-            return likers
-                ? user.Likers.Where(u => u.LikedId == id).Select(i => i.LikerId)
-                : user.Liked.Where(u => u.LikerId == id).Select(i => i.LikedId);
         }
 
         public async Task<User> GetUser(int id)
@@ -155,6 +142,16 @@ namespace DatingApp.API.Data
                 .ToListAsync();
 
             return messages;
+        }
+
+        private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
+        {
+            var user = await context.Users.Include(x => x.Likers).Include(x => x.Liked)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            return likers
+                ? user.Likers.Where(u => u.LikedId == id).Select(i => i.LikerId)
+                : user.Liked.Where(u => u.LikerId == id).Select(i => i.LikedId);
         }
     }
 }
