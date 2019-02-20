@@ -1,74 +1,84 @@
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DatingApp.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration config;
         private readonly IMapper mapper;
-        private readonly IAuthRepository repo;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
 
-        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
+        public AuthController(IConfiguration config, IMapper mapper,
+            UserManager<User> userManager, SignInManager<User> signInManager)
         {
-            this.repo = repo;
             this.config = config;
             this.mapper = mapper;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
-
-            if (await repo.UserExists(userForRegisterDto.Username)) return BadRequest("Username already exists");
-
             var userToCreate = mapper.Map<User>(userForRegisterDto);
 
-            var createdUser = await repo.Register(userToCreate, userForRegisterDto.Password);
+            var result = await userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
 
-            var userToReturn = mapper.Map<UserForDetailedDto>(createdUser);
+            var userToReturn = mapper.Map<UserForDetailedDto>(userToCreate);
 
-            return CreatedAtRoute("GetUser", new {controller = "Users", id = createdUser.Id}, userToReturn);
+            if (result.Succeeded)
+                return CreatedAtRoute("GetUser",
+                    new {controller = "Users", id = userToCreate.Id}, userToReturn);
+
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
-        {            
-            var userFromRepo = await repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
+        {
+            var user = await userManager.FindByNameAsync(userForLoginDto.Username);
 
-            if (userFromRepo == null) return Unauthorized();
+            var result = await signInManager.CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
 
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Username)
-            };
+            if (!result.Succeeded) return Unauthorized();
 
-            var user = mapper.Map<UserForListDto>(userFromRepo);
+            var appUser = await userManager.Users.Include(p => p.Photos)
+                .FirstOrDefaultAsync(u => u.NormalizedUserName == userForLoginDto.Username.ToUpper());
+
+            var userToReturn = mapper.Map<UserForListDto>(appUser);
 
             return Ok(new
             {
-                token = CreateToken(claims),
-                user
+                token = GenerateJwtToken(appUser),
+                user = userToReturn
             });
         }
 
-        private string CreateToken(IEnumerable<Claim> claims)
+        private string GenerateJwtToken(User user)
         {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+
             var key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(config.GetSection("AppSettings:Token").Value));
 
