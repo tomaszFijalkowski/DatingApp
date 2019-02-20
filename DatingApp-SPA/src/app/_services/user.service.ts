@@ -73,7 +73,7 @@ export class UserService {
     return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
   }
 
-  getMessages(id: number, page?, itemsPerPage?, messageContainer?){
+  getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
     const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
 
     let params = new HttpParams();
