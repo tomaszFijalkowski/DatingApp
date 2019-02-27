@@ -16,3 +16,16 @@ input[type=file] {
     width: 100px;
     color: transparent;
 }
+
+.not-approved {
+    opacity: 0.2;
+}
+
+.img-wrapper {
+    position: relative;
+}
+
+.img-text {
+    position: absolute;
+    bottom: 30%;
+}
