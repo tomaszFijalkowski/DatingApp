@@ -1,19 +1,23 @@
-<div class="container mt-5">
+<div class="container">
+  <div class="text-center mt-4 mb-4">
+    <h3>Your messages</h3>
+  </div>
+
   <div class="row">
-    <div class="btn-group">
-      <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Unread" (click)="loadMessages()">
+    <div class="btn-group pl-3">
+      <button class="btn btn-danger" [(ngModel)]="messageContainer" btnRadio="Unread" (click)="loadMessages()">
         <i class="fa fa-envelope"></i> Unread
       </button>
-      <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Inbox" (click)="loadMessages()">
+      <button class="btn btn-danger" [(ngModel)]="messageContainer" btnRadio="Inbox" (click)="loadMessages()">
         <i class="fa fa-envelope-open"></i> Inbox
       </button>
-      <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Outbox" (click)="loadMessages()">
+      <button class="btn btn-danger" [(ngModel)]="messageContainer" btnRadio="Outbox" (click)="loadMessages()">
         <i class="fa fa-paper-plane"></i> Outbox
       </button>
     </div>
   </div>
 
-  <div class="row" *ngIf="messages.length == 0">
+  <div class="row pl-3" *ngIf="messages.length == 0">
     <h3>No messages</h3>
   </div>
 
@@ -26,11 +30,12 @@
         <th style="width: 20%"></th>
       </tr>
       <tr *ngFor="let message of messages" [routerLink]="['/members', 
-          messageContainer == 'Outbox' ? message.recipientId : message.senderId]" [queryParams]="{tab: 3}">
+          messageContainer == 'Outbox' ? message.recipientId : message.senderId]"
+        [queryParams]="{tab: 3}">
         <td>{{message.content}}</td>
         <td>
           <div>
-            <img src="{{messageContainer == 'Outbox' ? message.recipientPhotoUrl : message.senderPhotoUrl }}" class="img-circle rounded-circle mr-2">
+            <img src="{{messageContainer == 'Outbox' ? message.recipientPhotoUrl : message.senderPhotoUrl }}" class="img-circle img-no-padding mr-2">
             <strong>{{messageContainer == 'Outbox' ? message.recipientKnownAs : message.senderKnownAs}}</strong>
           </div>
         </td>
@@ -45,7 +50,7 @@
 
 </div>
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center" *ngIf="pagination.totalItems > pagination.itemsPerPage">
   <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
     [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;"
     firstText="&laquo;" lastText="&raquo;">

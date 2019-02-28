@@ -38,7 +38,10 @@ namespace DatingApp.API.Data
 
             users = users.Where(u => u.Id != userParams.UserId);
 
-            users = users.Where(u => u.Gender == userParams.Gender);
+            if (!(userParams.Likers || userParams.Liked))
+            {
+                users = users.Where(u => u.Gender == userParams.Gender);
+            }
 
             if (userParams.Likers)
             {
@@ -145,7 +148,7 @@ namespace DatingApp.API.Data
                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
                 .Where(m => m.RecipientId == userId && m.RecipientDeleted == false && m.SenderId == recipientId
                             || m.RecipientId == recipientId && m.SenderId == userId && m.SenderDeleted == false)
-                .OrderByDescending(m => m.MessageSent)
+                .OrderBy(m => m.MessageSent)
                 .ToListAsync();
 
             return messages;

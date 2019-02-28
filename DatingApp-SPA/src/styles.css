@@ -1,20 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import '../node_modules/bootswatch/dist/flatly/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
 @import '../node_modules/alertifyjs/build/css/alertify.min.css';
 @import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
 @import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
+@import 'assets/css/paper-kit.css';
+
+.background-img { 
+  background: url('assets/home-bg.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 
 .tab-panel {
-  border: 1px solid #ddd;
   padding: 25px;
   border-radius: 4px;
 }
 
 .nav-tabs>li.open,
 .member-tabset>.nav-tabs>li:hover {
-  border-bottom: 4px solid #18bc9c44;
+  border-bottom: 4px solid #F5593D;
 }
 
 .member-tabset>.nav-tabs>li.open>a,
@@ -35,11 +41,12 @@
 }
 
 .member-tabset>.nav-tabs>li.active {
-  border-bottom: 4px solid #18bc9c;
+  border-bottom: 4px solid #F5593D;
   position: relative;
 }
 
 .member-tabset>.nav-tabs>li.active>a {
+  margin-bottom: 10px;
   border: 0 !important;
   color: #333333;
 }

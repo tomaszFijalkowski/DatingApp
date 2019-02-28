@@ -6,7 +6,12 @@ declare let alertify: any;
 })
 export class AlertifyService {
 
-  constructor() { }
+  constructor() {
+    alertify.defaults.transition = 'slide';
+    alertify.defaults.theme.ok = 'btn btn-primary';
+    alertify.defaults.theme.cancel = 'btn btn-danger';
+    alertify.defaults.theme.input = 'form-control';
+   }
 
   confirm(message: string, okCallback: () => any) {
     alertify.confirm(message, function(e) {

@@ -3,15 +3,19 @@
     <img src="{{photo.url}}" 
       class="img-thumbnail p-0 mb-2" alt=""
       [ngClass]="!photo.isApproved && 'not-approved'">
-      <div class="text-center img-text pb-4" *ngIf="!photo.isApproved">
-          <span class="text-danger">Awaiting approval</span>
-        </div>
-    <div class="btn-group w-100 text-center mb-4 pr-3">
-      
-      <button type="button" class="btn btn-sm" (click)="setMainPhoto(photo)" [ngClass]="photo.isMain ? 'btn-success active' : 'btn-secondary'"
-        [disabled]="photo.isMain || !photo.isApproved">Main</button>
-      <button type="button" class="btn btn-sm btn-danger" (click)="deletePhoto(photo.id)" [disabled]="photo.isMain"><i
-          class="fa fa-trash-o"></i></button>
+      <div class="img-text pending" *ngIf="!photo.isApproved">
+          <span class="label label-warning">Pending</span>
+      </div>
+      <div class="img-text main" *ngIf="photo.isMain">
+          <span class="label label-success">Main</span>
+      </div>
+    <div class="btn-group w-100 text-center mb-4 pr-3" *ngIf="!photo.isMain">
+      <button type="button" class="btn btn-sm btn-success" (click)="setMainPhoto(photo)"
+        [disabled]="photo.isMain || !photo.isApproved" *ngIf="photo.isApproved">Main</button>
+      <button type="button" class="btn btn-sm btn-warning" (click)="deletePhoto(photo.id)" [disabled]="photo.isMain" *ngIf="!photo.isApproved">
+          <i class="fa fa-ban"></i> Cancel</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="deletePhoto(photo.id)" [disabled]="photo.isMain" *ngIf="photo.isApproved">
+          <i class="fa fa-trash-o"></i></button>
     </div>
   </div>
 </div>
@@ -23,8 +27,8 @@
     <h4>Add Photos</h4>
 
     <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader"
-      class="card bg-faded p-3 text-center pb-3 mb-4 mt-3 my-drop-zone">
-      <i class="fa fa-upload fa-2x pb-2"></i>
+      class="bg-faded p-3 text-center mb-4 mt-4 my-drop-zone">
+      <i class="fa fa-upload fa-2x"></i><br>
       Drop Photos Here
     </div>
     <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />

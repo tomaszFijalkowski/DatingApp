@@ -1,17 +1,17 @@
 .card:hover img {
-    transform: scale(1.2, 1.2);
     transition-duration: 400ms;
     transition-timing-function: ease-out;
-    opacity: 0.75;
+    opacity: 0.66;
 }
 
 .card img {
-    transform: scale(1.0, 1.0);
     transition-duration: 400ms;
     transition-timing-function: ease-out;
 }
 
 .card-img-wrapper {
+    border-top-left-radius: calc(0.75rem - 1px);
+    border-top-right-radius: calc(0.75rem - 1px);
     overflow: hidden;
     position: relative;
     background-color: black;

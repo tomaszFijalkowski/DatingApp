@@ -100,12 +100,16 @@ namespace DatingApp.API.Controllers
 
             var messageFromRepo = await repo.GetMessage(id);
 
-            if (messageFromRepo.SenderId == userId) messageFromRepo.SenderDeleted = true;
+//            if (messageFromRepo.SenderId == userId) messageFromRepo.SenderDeleted = true;
+//
+//            if (messageFromRepo.RecipientId == userId) messageFromRepo.RecipientDeleted = true;
+//
+//            if (messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted) repo.Delete(messageFromRepo);
 
             if (messageFromRepo.RecipientId == userId) messageFromRepo.RecipientDeleted = true;
 
-            if (messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted) repo.Delete(messageFromRepo);
-
+            if (messageFromRepo.SenderId == userId) repo.Delete(messageFromRepo);
+            
             if (await repo.SaveAll()) return NoContent();
 
             throw new Exception("Error deleting the message");

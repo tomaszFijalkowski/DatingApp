@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+<nav class="navbar navbar-expand-md navbar-dark bg-danger">
   <div class="container">
     <a class="navbar-brand" [routerLink]="['/home']">Dating App</a>
 
@@ -12,22 +12,22 @@
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" [routerLink]="['/messages']">Messages</a>
       <li *appHasRole="['Admin', 'Moderator']" class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/admin']">Admin</a>
+        <a class="nav-link" [routerLink]="['/admin']">Manage</a>
     </ul>
 
     <div *ngIf="loggedIn()" class="dropdown" dropdown>
       <span>
-        <img src="{{photoUrl || '../../assets/user.png'}}" class="mr-3">
+        <img src="{{photoUrl || '../../assets/user.png'}}" class="mr-3 mt-2 img-circle img-no-padding">
       </span>
       <a class="dropdown-toggle text-light" dropdownToggle>
-        Welcome {{ authService.decodedToken?.unique_name | titlecase }}
+        <strong>Welcome {{ authService.decodedToken?.unique_name | titlecase }}</strong>
       </a>
 
-      <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user"></i> Edit Profile</a>
+      <div class="dropdown-danger dropdown-menu-right dropdown-menu show" *dropdownMenu>
+        <a class="dropdown-item" [routerLink]="['/member/edit']"><i class="fa fa-user ml-2"></i> Edit Profile</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" (mouseover)="hover=true" (mouseleave)="hover=false" (click)="logout(); hover=false">
-            <span [ngStyle]="{color: hover==true ? '#fff' : '#000' }"><i class="fa fa-sign-out"></i> Logout</span></a>
+          <span [ngStyle]="{color: hover==true ? '#fff' : '#000' }"><i class="fa fa-sign-out ml-2"></i> Logout</span></a>
       </div>
     </div>
 

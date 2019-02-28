@@ -1,0 +1,7 @@
+.card:not(.card-plain):hover{
+    box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -moz-transform: translateY(0);
+}

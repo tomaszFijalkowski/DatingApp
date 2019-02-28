@@ -5,11 +5,12 @@ img.img-thumbnail {
 
 .my-drop-zone {
     border: dotted 5px #DEE2E6;
+    border-radius: 5px;
     color: #888;
 }
 
 .nv-file-over {
-    border: dotted 5px #18bc9c;
+    border: dotted 5px #4AC37F;
 }
 
 input[type=file] {
@@ -17,11 +18,22 @@ input[type=file] {
     color: transparent;
 }
 
+.pending {
+    margin-bottom: 92px;
+    margin-left: 38px;
+}
+
+.main {
+    margin-bottom: 92px;
+    margin-left: 60px;
+}
+
 .not-approved {
     opacity: 0.2;
 }
 
 .img-wrapper {
+    min-height: 164.86px;
     position: relative;
 }
 

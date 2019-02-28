@@ -1,13 +1,16 @@
 <div class="row">
+  <div *ngIf="!photos?.length">
+    <h4 class="ml-4 mb-4">No pending photos...</h4>
+  </div>
   <div class="col-sm-2" *ngFor="let photo of photos">
-    <h4>{{photo.userName}}</h4>
-    <img src="{{photo.url}}" class="img-thumbnail p-1" alt="photo.userName">
+    <h4 class="mb-2">{{photo.userName}}</h4>
+    <img src="{{photo.url}}" class="img-thumbnail p-0" alt="photo.userName">
 
     <div class="text-center">
-      <button class="btn btn-sm btn-success mr-1"
-      (click)="approvePhoto(photo.id)">Approve</button>
-      <button class="btn btn-sm btn-danger"
-      (click)="rejectPhoto(photo.id)">Reject</button>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-success" (click)="approvePhoto(photo.id)">Approve</button>
+        <button class="btn btn-sm btn-danger" (click)="rejectPhoto(photo.id)">Reject</button>
+      </div>
     </div>
   </div>
 </div>

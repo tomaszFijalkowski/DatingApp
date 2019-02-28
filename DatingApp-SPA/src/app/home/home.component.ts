@@ -11,7 +11,13 @@ export class HomeComponent implements OnInit {
 
   constructor(private http: HttpClient) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    document.body.classList.add('background-img');
+  }
+
+  ngOnDestroy() {
+    document.body.classList.remove('background-img');
+  }
 
   registerToggle() {
     this.registerMode = true;
