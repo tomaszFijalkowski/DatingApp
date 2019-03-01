@@ -1,9 +1,8 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
-@import '../node_modules/alertifyjs/build/css/alertify.min.css';
-@import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
 @import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
 @import 'assets/css/paper-kit.css';
+@import 'assets/css/toastr.css';
 
 .background-img { 
   background: url('assets/home-bg.jpg') no-repeat center center fixed;

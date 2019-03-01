@@ -43,7 +43,7 @@ namespace DatingApp.API.Controllers
             var result = await userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
 
             var userToReturn = mapper.Map<UserForDetailedDto>(userToCreate);
-
+            
             if (result.Succeeded)
                 return CreatedAtRoute("GetUser",
                     new {controller = "Users", id = userToCreate.Id}, userToReturn);
@@ -55,10 +55,15 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var user = await userManager.FindByNameAsync(userForLoginDto.Username);
+            
+            if (user == null)
+            {
+                return Unauthorized("Wrong Username or Password");
+            }
 
             var result = await signInManager.CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
 
-            if (!result.Succeeded) return Unauthorized();
+            if (!result.Succeeded) return Unauthorized("Wrong Username or Password");
 
             var appUser = await userManager.Users.Include(p => p.Photos)
                 .FirstOrDefaultAsync(u => u.NormalizedUserName == userForLoginDto.Username.ToUpper());

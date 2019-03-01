@@ -28,7 +28,6 @@ namespace DatingApp.API.Data
 
             var roles = new List<Role>
             {
-                new Role {Name = "Member"},
                 new Role {Name = "Admin"},
                 new Role {Name = "Moderator"},
                 new Role {Name = "VIP"}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { AlertifyService } from '../_services/alertify.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +12,7 @@ export class NavComponent implements OnInit {
   model: any = {};
   photoUrl: string;
 
-  constructor(public authService: AuthService, private alertify: AlertifyService,
+  constructor(public authService: AuthService, private toastr: ToastrService,
     private router: Router) { }
 
   ngOnInit() {
@@ -21,9 +21,9 @@ export class NavComponent implements OnInit {
 
   login() {
     this.authService.login(this.model).subscribe(next => {
-      this.alertify.success('Logged in successfully');
+      this.toastr.info('Logged in successfully');
     }, error => {
-      this.alertify.error(error);
+      error === 'Unauthorized' ? this.toastr.error('Invalid Username or Password') : this.toastr.error(error);
     }, () => {
       this.router.navigate(['/members']);
     });
@@ -38,7 +38,7 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('user');
     this.authService.decodedToken = null;
     this.authService.currentUser = null;
-    this.alertify.message('Logged out');
+    this.toastr.info('Logged out successfully');
     this.router.navigate(['/home']);
   }
 }

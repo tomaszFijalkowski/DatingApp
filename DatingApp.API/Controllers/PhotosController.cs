@@ -76,8 +76,6 @@ namespace DatingApp.API.Controllers
 
             var photo = mapper.Map<Photo>(photoForCreationDto);
 
-            if (!userFromRepo.Photos.Any(u => u.IsMain)) photo.IsMain = true;
-
             userFromRepo.Photos.Add(photo);
 
             if (await repo.SaveAll())
@@ -100,11 +98,13 @@ namespace DatingApp.API.Controllers
 
             var photoFromRepo = await repo.GetPhoto(id);
 
-            if (photoFromRepo.IsMain) return BadRequest("This is already the main photo");
+            if (photoFromRepo.IsMain) return BadRequest("This is already your main photo");
 
             var currentMainPhoto = await repo.GetMainPhotoForUser(userId);
-            currentMainPhoto.IsMain = false;
-            photoFromRepo.IsMain = true;
+
+            if (currentMainPhoto != null) currentMainPhoto.IsMain = false;
+            
+            photoFromRepo.IsMain = true; 
 
             if (await repo.SaveAll()) return NoContent();
 
@@ -121,8 +121,6 @@ namespace DatingApp.API.Controllers
             if (userFromRepo.Photos.All(p => p.Id != id)) return Unauthorized();
 
             var photoFromRepo = await repo.GetPhoto(id);
-
-            if (photoFromRepo.IsMain) return BadRequest("You cannot delete your main photo");
 
             if (photoFromRepo.PublicId != null)
             {

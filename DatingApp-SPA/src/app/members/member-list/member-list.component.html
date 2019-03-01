@@ -13,13 +13,13 @@
     <div class="form-group px-2">
       <label for="minAge">Age From</label>
       <input type="number" class="form-control ml-1" style="width: 70px" id="minAge" [(ngModel)]="userParams.minAge"
-        name="minAge">
+        name="minAge" min="0" max="99">
     </div>
 
     <div class="form-group px-2">
       <label for="maxAge">Age To</label>
       <input type="number" class="form-control ml-1" style="width: 70px" id="maxAge" [(ngModel)]="userParams.maxAge"
-        name="maxAge">
+        name="maxAge" min="0" max="99">
     </div>
 
     <div class="form-group px-2">

@@ -3,6 +3,7 @@ import { User } from 'src/app/_models/user';
 import { AdminService } from 'src/app/_services/admin.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { RolesModalComponent } from '../roles-modal/roles-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-management',
@@ -12,7 +13,7 @@ import { RolesModalComponent } from '../roles-modal/roles-modal.component';
 export class UserManagementComponent implements OnInit {
   users: User[];
   bsModalRef: BsModalRef;
-  constructor(private adminService: AdminService, private modalService: BsModalService) { }
+  constructor(private adminService: AdminService, private modalService: BsModalService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getUsersWithRoles();
@@ -22,7 +23,7 @@ export class UserManagementComponent implements OnInit {
     this.adminService.getUsersWithRoles().subscribe((users: User[]) => {
       this.users = users;
     }, error => {
-      console.log(error);
+      this.toastr.error(error);
     });
   }
 
@@ -37,13 +38,12 @@ export class UserManagementComponent implements OnInit {
         roleNames: [...values.filter(el => el.checked === true).map(el => el.name)]
       };
 
-      console.log(rolesToUpdate);
-
       if (rolesToUpdate) {
         this.adminService.updateUserRoles(user, rolesToUpdate).subscribe(() => {
           user.roles = [...rolesToUpdate.roleNames];
+          this.toastr.success(user.userName + '\'s roles have been updated');
         }, error => {
-          console.log(error);
+          this.toastr.error(error);
         });
       }
     });
@@ -55,7 +55,6 @@ export class UserManagementComponent implements OnInit {
     const availableRoles: any[] = [
       { name: 'Admin', value: 'Admin' },
       { name: 'Moderator', value: 'Moderator' },
-      { name: 'Member', value: 'Member' },
       { name: 'VIP', value: 'VIP' },
     ];
 

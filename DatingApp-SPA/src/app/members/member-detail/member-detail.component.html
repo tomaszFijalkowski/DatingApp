@@ -10,8 +10,8 @@
           <div>
             <strong>Location:</strong>
             <p>{{user.city}}
-              {{user.city.trim() !== '' && user.country.trim() !== '' ? '-' :
-              user.city.trim() === '' && user.country.trim() === '' ? 'Not specified' : ''}}
+              {{user.city?.trim() !== '' && user.country?.trim() !== '' ? '-' :
+              user.city?.trim() === '' && user.country?.trim() === '' ? 'Not specified' : ''}}
               {{user.country}}</p>
           </div>
           <div>
@@ -41,13 +41,13 @@
           <tabset class="member-tabset" #memberTabs>
             <tab heading="About {{user.knownAs}}">
               <h4 class="mb-2">Description</h4>
-              <p>{{user.introduction.trim() !== '' ? user.introduction : 'Not specified'}}</p>
+              <p>{{user.introduction && user.introduction?.trim() !== '' ? user.introduction : 'Not specified'}}</p>
               <h4 class="mb-2">Looking For</h4>
-              <p>{{user.lookingFor.trim() !== '' ? user.lookingFor : 'Not specified'}}</p>
+              <p>{{user.lookingFor && user.lookingFor?.trim() !== '' ? user.lookingFor : 'Not specified'}}</p>
             </tab>
             <tab heading="Interests">
               <h4 class="mb-2">Interests</h4>
-              <p>{{user.interests.trim() !== '' ? user.interests : 'Not specified'}}</p>
+              <p>{{user.interests && user.interests?.trim() !== '' ? user.interests : 'Not specified'}}</p>
             </tab>
             <tab heading="Photos">
               <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>

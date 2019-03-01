@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { User } from 'src/app/_models/user';
 import { ActivatedRoute } from '@angular/router';
-import { AlertifyService } from 'src/app/_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
 import { UserService } from 'src/app/_services/user.service';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -22,26 +22,36 @@ export class MemberEditComponent implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private alertify: AlertifyService,
-     private userService: UserService, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private toastr: ToastrService,
+    private userService: UserService, private authService: AuthService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
       this.user = data['user'];
     });
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
+    this.toastr.toastrConfig.preventDuplicates = true;
   }
 
   updateUser() {
+    this.toastr.clear();
+    this.toastr.toastrConfig.easeTime = 300;
+    this.toastr.toastrConfig.disableTimeOut = false;
     this.userService.updateUser(this.authService.decodedToken.nameid, this.user).subscribe(next => {
-      this.alertify.success('Profile updated successfully');
-      this.editForm.reset(this.user);
+      this.toastr.success('Profile updated successfully');
     }, error => {
-      this.alertify.error(error);
+      this.toastr.info(error);
     });
+    this.editForm.reset(this.user);
   }
 
   updateMainPhoto(photoUrl) {
     this.user.photoUrl = photoUrl;
+  }
+
+  changesNotification() {
+    this.toastr.toastrConfig.easeTime = 0;
+    this.toastr.toastrConfig.disableTimeOut = true;
+    this.toastr.info('Any unsaved changes will be lost');
   }
 }

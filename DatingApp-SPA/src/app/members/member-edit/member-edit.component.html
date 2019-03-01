@@ -3,11 +3,6 @@
       <div class="col-sm-4">
         <h1 class="ml-3 mb-4">Your Profile</h1>
       </div>
-      <div class="col-sm-8">
-        <div *ngIf="editForm.dirty" class="alert alert-info mt-2 mb-2">
-          <strong>Information: </strong> You have made changes.  Any unsaved changes will be lost!
-        </div>
-      </div>
     </div>
     <div class="row mb-4">
       <div class="col-sm-4">
@@ -43,7 +38,7 @@
         <div class="tab-panel card">
           <tabset class="member-tabset">
             <tab heading="Edit Profile">
-              <form #editForm="ngForm" id="editForm" (ngSubmit)="updateUser()">
+              <form #editForm="ngForm" id="editForm" (change)="changesNotification()" (ngSubmit)="updateUser()">
                   <h4>Description</h4>
                   <textarea name="introduction" rows="6" class="form-control mb-4 mt-3" [(ngModel)]="user.introduction"></textarea>
                   <h4>Looking For</h4>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../_services/user.service';
 import { User } from '../../_models/user';
-import { AlertifyService } from '../../_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { Pagination, PaginatedResult } from 'src/app/_models/pagination';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-list',
@@ -17,7 +17,7 @@ export class MemberListComponent implements OnInit {
   userParams: any = {};
   pagination: Pagination;
 
-  constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -49,7 +49,8 @@ export class MemberListComponent implements OnInit {
       this.users = res.result;
       this.pagination = res.pagination;
     }, error => {
-      this.alertify.error(error);
+      console.log(error);
+      this.toastr.error(error);
     });
   }
 

@@ -67,9 +67,7 @@ namespace DatingApp.API.Controllers
 
             mapper.Map(userForUpdateDto, userFromRepo);
 
-            if (await repo.SaveAll()) return NoContent();
-
-            throw new Exception($"Updating user {id} failed on save");
+            return (await repo.SaveAll()) ? (IActionResult) NoContent() : BadRequest("No changes were detected");
         }
 
         [HttpPost("{id}/like/{recipientId}")]
@@ -79,7 +77,9 @@ namespace DatingApp.API.Controllers
 
             var like = await repo.GetLike(id, recipientId);
 
-            if (like != null) return BadRequest("You already like this user");
+            var likedUser = repo.GetUser(recipientId, false).Result.KnownAs;
+
+            if (like != null) return BadRequest("You already like " + likedUser);
 
             if (await repo.GetUser(recipientId, false) == null) return NotFound();
 
@@ -93,7 +93,7 @@ namespace DatingApp.API.Controllers
 
             if (await repo.SaveAll()) return Ok();
 
-            return BadRequest("Failed to like user");
+            return BadRequest("Failed to like user" + likedUser);
         }
     }
 }

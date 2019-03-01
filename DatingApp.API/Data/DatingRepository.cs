@@ -55,13 +55,10 @@ namespace DatingApp.API.Data
                 users = users.Where(u => userLiked.Contains(u.Id));
             }
 
-            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
-            {
-                var minDateOfBirth = DateTime.Today.AddYears(-userParams.MaxAge - 1);
-                var maxDateOfBirth = DateTime.Today.AddYears(-userParams.MinAge);
+            var minDateOfBirth = DateTime.Today.AddYears(-Math.Clamp(userParams.MaxAge, 0, 99) - 1);
+            var maxDateOfBirth = DateTime.Today.AddYears(-Math.Clamp(userParams.MinAge, 0, 99));
 
-                users = users.Where(u => u.DateOfBirth >= minDateOfBirth && u.DateOfBirth <= maxDateOfBirth);
-            }
+            users = users.Where(u => u.DateOfBirth >= minDateOfBirth && u.DateOfBirth <= maxDateOfBirth);
 
             if (!string.IsNullOrEmpty(userParams.OrderBy))
                 switch (userParams.OrderBy)

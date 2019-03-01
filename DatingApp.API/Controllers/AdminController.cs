@@ -22,7 +22,7 @@ namespace DatingApp.API.Controllers
         private readonly DataContext context;
         private readonly UserManager<User> userManager;
         private readonly IOptions<CloudinarySettings> cloudinaryConfig;
-        private Cloudinary cloudinary;
+        private readonly Cloudinary cloudinary;
 
         public AdminController(
             DataContext context,

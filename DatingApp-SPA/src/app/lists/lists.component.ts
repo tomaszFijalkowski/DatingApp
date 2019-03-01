@@ -4,7 +4,7 @@ import { User } from '../_models/user';
 import { AuthService } from '../_services/auth.service';
 import { UserService } from '../_services/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { AlertifyService } from '../_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lists',
@@ -17,7 +17,7 @@ export class ListsComponent implements OnInit {
   likesParam: string;
 
   constructor(private authService: AuthService, private userService: UserService,
-     private route: ActivatedRoute, private alertify: AlertifyService) { }
+     private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -38,7 +38,7 @@ export class ListsComponent implements OnInit {
       this.users = res.result;
       this.pagination = res.pagination;
     }, error => {
-      this.alertify.error(error);
+      this.toastr.error(error);
     });
   }
 

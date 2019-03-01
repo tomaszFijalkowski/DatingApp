@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
-import { AlertifyService } from '../_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router,
-    private alertify: AlertifyService) { }
+    private toastr: ToastrService) { }
 
   canActivate(next: ActivatedRouteSnapshot): boolean {
     const roles = next.firstChild.data['roles'] as Array<string>;
@@ -18,14 +18,14 @@ export class AuthGuard implements CanActivate {
         return true;
       } else {
         this.router.navigate(['members']);
-        this.alertify.error('You are not authorised to access this area');
+        this.toastr.error('Unauthorized');
       }
     }
     if (this.authService.loggedIn()) {
       return true;
     }
 
-    this.alertify.error('You shall not pass!');
+    this.toastr.error('Unauthorized');
     this.router.navigate(['/home']);
     return false;
 

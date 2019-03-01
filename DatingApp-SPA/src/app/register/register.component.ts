@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
-import { AlertifyService } from '../_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { User } from '../_models/user';
@@ -13,15 +13,21 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
+  minDate: Date;
+  maxDate: Date;
   user: User;
   registerForm: FormGroup;
   bsConfig: Partial<BsDatepickerConfig>;
 
-  constructor(private authService: AuthService, private alertify: AlertifyService, private fb: FormBuilder, private router: Router) { }
+  constructor(private authService: AuthService, private toastr: ToastrService,
+    private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
+    this.setDatePickerDates();
     this.bsConfig = {
-      containerClass: 'theme-red'
+      containerClass: 'theme-red',
+      minDate: this.minDate,
+      maxDate: this.maxDate
     },
     this.createRegisterForm();
   }
@@ -36,20 +42,20 @@ export class RegisterComponent implements OnInit {
       country: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(20)]],
       confirmPassword: ['', Validators.required]
-    }, {validator: this.passwordMatchValidator});
+    }, { validator: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(g: FormGroup) {
-    return g.get('password').value === g.get('confirmPassword').value ? null : {'mismatch': true};
+    return g.get('password').value === g.get('confirmPassword').value ? null : { 'mismatch': true };
   }
 
   register() {
     if (this.registerForm.valid) {
       this.user = Object.assign({}, this.registerForm.value);
       this.authService.register(this.user).subscribe(() => {
-        this.alertify.success('Registration successfull');
+        this.toastr.success('Profile registered successfully');
       }, error => {
-        this.alertify.error(error);
+        this.toastr.error(error);
       }, () => {
         this.authService.login(this.user).subscribe(() => {
           this.router.navigate(['/members']);
@@ -60,6 +66,13 @@ export class RegisterComponent implements OnInit {
 
   cancel() {
     this.cancelRegister.emit(false);
+  }
+
+  setDatePickerDates() {
+    const minDate = new Date();
+    minDate.setFullYear(new Date().getFullYear() - 99);
+    this.minDate = minDate;
+    this.maxDate = new Date();
   }
 
 }

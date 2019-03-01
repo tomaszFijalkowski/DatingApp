@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/_models/user';
 import { UserService } from 'src/app/_services/user.service';
-import { AlertifyService } from 'src/app/_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 import { TabsetComponent } from 'ngx-bootstrap';
@@ -21,11 +21,12 @@ export class MemberDetailComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private alertify: AlertifyService,
+    private toastr: ToastrService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
+      this.toastr.toastrConfig.preventDuplicates = true;
       this.user = data['user'];
     });
 
@@ -49,9 +50,9 @@ export class MemberDetailComponent implements OnInit {
 
   sendLike(id: number) {
     this.userService.sendLike(this.authService.decodedToken.nameid, id).subscribe(data => {
-      this.alertify.success('You have liked ' + this.user.knownAs);
+      this.toastr.success('You have liked ' + this.user.knownAs);
     }, error => {
-      this.alertify.error(error);
+      this.toastr.error(error);
     });
   }
 

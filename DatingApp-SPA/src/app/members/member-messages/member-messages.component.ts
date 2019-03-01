@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Message } from 'src/app/_models/message';
 import { UserService } from 'src/app/_services/user.service';
 import { AuthService } from 'src/app/_services/auth.service';
-import { AlertifyService } from 'src/app/_services/alertify.service';
+import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -16,7 +16,7 @@ export class MemberMessagesComponent implements OnInit {
   newMessage: any = {};
 
   constructor(private userService: UserService, private authService: AuthService,
-    private alertify: AlertifyService) { }
+    private toastr: ToastrService) { }
 
   ngOnInit() {
     this.loadMessages();
@@ -37,7 +37,7 @@ export class MemberMessagesComponent implements OnInit {
       .subscribe(messages => {
         this.messages = messages;
       }, error => {
-        this.alertify.error(error);
+        this.toastr.error(error);
       });
   }
 
@@ -47,7 +47,7 @@ export class MemberMessagesComponent implements OnInit {
       this.messages.push(message);
       this.newMessage.content = '';
     }, error => {
-      this.alertify.error(error);
+      this.toastr.error(error);
     });
   }
 

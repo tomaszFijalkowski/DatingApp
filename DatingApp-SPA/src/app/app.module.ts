@@ -15,7 +15,6 @@ import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
-import { AlertifyService } from './_services/alertify.service';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -39,6 +38,9 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { AdminService } from './_services/admin.service';
 import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -79,6 +81,12 @@ export function tokenGetter() {
       ModalModule.forRoot(),
       NgxGalleryModule,
       FileUploadModule,
+      CommonModule,
+      BrowserAnimationsModule, // required animations module
+      ToastrModule.forRoot({
+         positionClass: 'toast-bottom-right',
+         progressBar: true,
+      }),
       JwtModule.forRoot({
          config: {
             tokenGetter: tokenGetter,
@@ -90,7 +98,6 @@ export function tokenGetter() {
    providers: [
       AuthService,
       ErrorInterceptorProvider,
-      AlertifyService,
       AuthGuard,
       UserService,
       MemberDetailResolver,
@@ -109,3 +116,4 @@ export function tokenGetter() {
    ]
 })
 export class AppModule { }
+
