@@ -1,6 +1,7 @@
-<div class="container">
-  <div class="text-center mt-4 mb-4">
-    <h3>Your matches - {{pagination.totalItems}} found</h3>
+<div class="container mt-2">
+  <div class="text-center mb-4">
+    <h4 class="mt-4">Your matches - <strong>{{pagination.totalItems}} found</strong></h4>
+    <hr>
   </div>
 
   <div class="row mb-4">
@@ -46,14 +47,14 @@
   </form>
 </div>
 
-  <div class="row">
+  <div class="row row-content pt-2">
     <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
       <app-member-card [user]="user"></app-member-card>
     </div>
   </div>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination.totalItems > pagination.itemsPerPage">
+<div class="d-flex justify-content-center mb-2" *ngIf="pagination.totalItems > pagination.itemsPerPage">
   <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
     [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;"
     firstText="&laquo;" lastText="&raquo;">

@@ -14,10 +14,16 @@ namespace DatingApp.API.Helpers
             var resultContext = await next();
 
             var userId = int.Parse(resultContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var repo = resultContext.HttpContext.RequestServices.GetService<IDatingRepository>();
-            var user = await repo.GetUser(userId, true);
+
+            var usersRepository = resultContext.HttpContext.RequestServices.GetService<IUsersRepository>();
+
+            var repository = resultContext.HttpContext.RequestServices.GetService<IRepository>();
+
+            var user = await usersRepository.GetUser(userId, true);
+
             user.LastActive = DateTime.Now;
-            await repo.SaveAll();
+
+            await repository.SaveAll();
         }
     }
 }

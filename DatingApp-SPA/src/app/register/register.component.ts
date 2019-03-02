@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.setDatePickerDates();
+    this.toastr.toastrConfig.preventDuplicates = true;
     this.bsConfig = {
       containerClass: 'theme-red',
       minDate: this.minDate,
@@ -55,7 +56,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(this.user).subscribe(() => {
         this.toastr.success('Profile registered successfully');
       }, error => {
-        this.toastr.error(error);
+        this.toastr.error(error === 'Failed : DuplicateUserName' ? 'This Username is already taken' : error);
       }, () => {
         this.authService.login(this.user).subscribe(() => {
           this.router.navigate(['/members']);

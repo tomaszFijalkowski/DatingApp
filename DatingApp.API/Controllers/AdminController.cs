@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
@@ -5,7 +6,6 @@ using CloudinaryDotNet.Actions;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Helpers;
-using DatingApp.API.Migrations;
 using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,10 +19,10 @@ namespace DatingApp.API.Controllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
+        private readonly Cloudinary cloudinary;
+        private readonly IOptions<CloudinarySettings> cloudinaryConfig;
         private readonly DataContext context;
         private readonly UserManager<User> userManager;
-        private readonly IOptions<CloudinarySettings> cloudinaryConfig;
-        private readonly Cloudinary cloudinary;
 
         public AdminController(
             DataContext context,
@@ -50,8 +50,8 @@ namespace DatingApp.API.Controllers
                 orderby user.UserName
                 select new
                 {
-                    Id = user.Id,
-                    UserName = user.UserName,
+                    user.Id,
+                    user.UserName,
                     Roles = (from userRole in user.UserRoles
                         join role in context.Roles
                             on userRole.RoleId
@@ -76,17 +76,11 @@ namespace DatingApp.API.Controllers
 
             var result = await userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
 
-            if (!result.Succeeded)
-            {
-                return BadRequest("Failed to add to roles");
-            }
+            if (!result.Succeeded) return BadRequest("Failed to add to roles");
 
             result = await userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
 
-            if (!result.Succeeded)
-            {
-                return BadRequest("Failed to remove the roles");
-            }
+            if (!result.Succeeded) return BadRequest("Failed to remove the roles");
 
             return Ok(await userManager.GetRolesAsync(user));
         }
@@ -101,10 +95,10 @@ namespace DatingApp.API.Controllers
                 .Where(p => p.IsApproved == false)
                 .Select(u => new
                 {
-                    Id = u.Id,
-                    UserName = u.User.UserName,
-                    Url = u.Url,
-                    IsApproved = u.IsApproved
+                    u.Id,
+                    u.User.UserName,
+                    u.Url,
+                    u.IsApproved
                 }).ToListAsync();
 
             return Ok(photos);
@@ -129,6 +123,8 @@ namespace DatingApp.API.Controllers
         [HttpPost("rejectPhoto/{photoId}")]
         public async Task<IActionResult> RejectPhoto(int photoId)
         {
+            Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>" + photoId);
+            
             var photo = await context.Photos
                 .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(p => p.Id == photoId);
@@ -139,10 +135,7 @@ namespace DatingApp.API.Controllers
 
                 var result = cloudinary.Destroy(deleteParams);
 
-                if (result.Result == "ok")
-                {
-                    context.Photos.Remove(photo);
-                }
+                if (result.Result == "ok") context.Photos.Remove(photo);
             }
             else
             {

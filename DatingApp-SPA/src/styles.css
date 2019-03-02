@@ -4,8 +4,24 @@
 @import 'assets/css/paper-kit.css';
 @import 'assets/css/toastr.css';
 
+h3, hr {
+  padding-bottom: 6px;
+}
+
+.ngx-gallery-icon-content {
+  color: #F5593D;
+}
+
+.ngx-gallery-disabled{
+  opacity: 0 !important;
+}
+
+.row-content {
+  min-height: 480px;
+}
+
 .background-img { 
-  background: url('assets/home-bg.jpg') no-repeat center center fixed;
+  background: url('assets/home-bg-1.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

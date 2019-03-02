@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,11 @@ namespace DatingApp.API.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
 
-        public AuthController(IConfiguration config, IMapper mapper,
-            UserManager<User> userManager, SignInManager<User> signInManager)
+        public AuthController(
+            IConfiguration config,
+            IMapper mapper,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             this.config = config;
             this.mapper = mapper;
@@ -43,23 +47,21 @@ namespace DatingApp.API.Controllers
             var result = await userManager.CreateAsync(userToCreate, userForRegisterDto.Password);
 
             var userToReturn = mapper.Map<UserForDetailedDto>(userToCreate);
-            
+
             if (result.Succeeded)
                 return CreatedAtRoute("GetUser",
                     new {controller = "Users", id = userToCreate.Id}, userToReturn);
 
-            return BadRequest(result.Errors);
+            Console.WriteLine(">>>>>>>>>>>>" + result.ToString());
+            return BadRequest(result.ToString());
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var user = await userManager.FindByNameAsync(userForLoginDto.Username);
-            
-            if (user == null)
-            {
-                return Unauthorized("Wrong Username or Password");
-            }
+
+            if (user == null) return Unauthorized("Wrong Username or Password");
 
             var result = await signInManager.CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
 
@@ -87,11 +89,8 @@ namespace DatingApp.API.Controllers
 
             var roles = await userManager.GetRolesAsync(user);
 
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-            
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
             var key = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(config.GetSection("AppSettings:Token").Value));
 

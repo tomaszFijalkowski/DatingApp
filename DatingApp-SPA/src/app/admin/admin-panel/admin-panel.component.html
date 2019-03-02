@@ -1,16 +1,19 @@
-<div class="container mt-4">
+<div class="container mt-2 pb-4">
   <div class="text-center mb-1">
-  <h3>Admin Panel</h3>
-</div>
-  <div class="card tab-panel">
+    <h4 class="mt-4">Management Panel</h4>
+    <hr>
+  </div>
+  <div class="card tab-panel mb-4 pt-2">
     <tabset class="member-tabset">
       <tab heading="User Management" *appHasRole="['Admin']">
-        <div class="container">
-          <app-user-management></app-user-management>
+        <div class="container mt-2">
+          <app-user-management [users]="users"></app-user-management>
         </div>
       </tab>
       <tab heading="Photo Management" *appHasRole="['Admin', 'Moderator']">
-        <app-photo-management></app-photo-management>
+        <div class="mt-2">
+        <app-photo-management [photos]="photos"></app-photo-management>
+        </div>
       </tab>
     </tabset>
   </div>

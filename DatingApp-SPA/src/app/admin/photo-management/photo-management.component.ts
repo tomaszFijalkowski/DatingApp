@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AdminService } from 'src/app/_services/admin.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -8,25 +8,15 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./photo-management.component.css']
 })
 export class PhotoManagementComponent implements OnInit {
-  photos: any;
+  @Input() photos: any;
 
   constructor(private adminService: AdminService, private toastr: ToastrService) { }
 
-  ngOnInit() {
-    this.getPhotosForApproval();
-  }
-
-  getPhotosForApproval() {
-    this.adminService.getPhotosForApproval().subscribe((photos) => {
-      this.photos = photos;
-    }, error => {
-      this.toastr.error(error);
-    });
-  }
+  ngOnInit() { }
 
   approvePhoto(photo) {
     this.adminService.approvePhoto(photo.id).subscribe(() => {
-      this.photos.splice(this.photos.findIndex(p => p.Id === photo.id), 1);
+      this.photos.splice(this.photos.findIndex(p => p.id === photo.id), 1);
       this.toastr.success(photo.userName + '\'s photo has been approved');
     }, error => {
       this.toastr.error(error);
@@ -35,7 +25,7 @@ export class PhotoManagementComponent implements OnInit {
 
   rejectPhoto(photo) {
     this.adminService.rejectPhoto(photo.id).subscribe(() => {
-      this.photos.splice(this.photos.findIndex(p => p.Id === photo.id), 1);
+      this.photos.splice(this.photos.findIndex(p => p.id === photo.id), 1);
       this.toastr.success(photo.userName + '\'s photo has been rejected');
     }, error => {
       this.toastr.error(error);

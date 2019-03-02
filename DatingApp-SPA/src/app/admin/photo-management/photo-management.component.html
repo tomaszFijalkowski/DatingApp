@@ -3,14 +3,19 @@
     <h4 class="ml-4 mb-4">No pending photos...</h4>
   </div>
   <div class="col-sm-2" *ngFor="let photo of photos">
-    <h4 class="mb-2">{{photo.userName}}</h4>
-    <img src="{{photo.url}}" class="img-thumbnail p-0" alt="photo.userName">
-
-    <div class="text-center">
-      <div class="btn-group">
-        <button class="btn btn-sm btn-success" (click)="approvePhoto(photo)">Approve</button>
-        <button class="btn btn-sm btn-danger" (click)="rejectPhoto(photo)">Reject</button>
+    <div class="card mb-4">
+        <div class="card-img-wrapper">
+          <img class="card-img-top" src="{{photo.url}}" alt="{{photo.userName}}">
+          <ul class="list-inline member-icons animate text-center">
+            <li class="list-inline-item"><button class="btn btn-success pl-2 pr-2 pt-1 pb-1" (click)="approvePhoto(photo)"><i class="fa fa-check"></i></button></li>
+            <li class="list-inline-item"><button class="btn btn-danger pl-2 pr-2 pt-1 pb-1" (click)="rejectPhoto(photo)"><i class="fa fa-times"></i></button></li>
+          </ul>
+        </div>
+        <div class="card-body p-1">
+          <h6 class="card-title text-center mb-0">
+            {{photo.userName}}
+          </h6>
+        </div>
       </div>
-    </div>
   </div>
 </div>

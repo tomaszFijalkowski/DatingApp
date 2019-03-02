@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,11 +16,16 @@ namespace DatingApp.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMapper mapper;
-        private readonly IDatingRepository repo;
+        private readonly IRepository repository;
+        private readonly IUsersRepository usersRepository;
 
-        public UsersController(IDatingRepository repo, IMapper mapper)
+        public UsersController(
+            IRepository repository,
+            IUsersRepository usersRepository,
+            IMapper mapper)
         {
-            this.repo = repo;
+            this.repository = repository;
+            this.usersRepository = usersRepository;
             this.mapper = mapper;
         }
 
@@ -30,14 +34,14 @@ namespace DatingApp.API.Controllers
         {
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var userFromRepo = await repo.GetUser(currentUserId, true);
+            var userFromRepo = await usersRepository.GetUser(currentUserId, true);
 
             userParams.UserId = currentUserId;
 
             if (string.IsNullOrEmpty(userParams.Gender))
                 userParams.Gender = userFromRepo.Gender == "male" ? "female" : "male";
 
-            var users = await repo.GetUsers(userParams);
+            var users = await usersRepository.GetUsers(userParams);
 
             var usersToReturn = mapper.Map<IEnumerable<UserForListDto>>(users);
 
@@ -50,8 +54,8 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> GetUser(int id)
         {
             var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == id;
-            
-            var user = await repo.GetUser(id, isCurrentUser);
+
+            var user = await usersRepository.GetUser(id, isCurrentUser);
 
             var userToReturn = mapper.Map<UserForDetailedDto>(user);
 
@@ -63,11 +67,11 @@ namespace DatingApp.API.Controllers
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
 
-            var userFromRepo = await repo.GetUser(id, true);
+            var userFromRepo = await usersRepository.GetUser(id, true);
 
             mapper.Map(userForUpdateDto, userFromRepo);
 
-            return (await repo.SaveAll()) ? (IActionResult) NoContent() : BadRequest("No changes were detected");
+            return await repository.SaveAll() ? (IActionResult) NoContent() : BadRequest("No changes were detected");
         }
 
         [HttpPost("{id}/like/{recipientId}")]
@@ -75,13 +79,13 @@ namespace DatingApp.API.Controllers
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
 
-            var like = await repo.GetLike(id, recipientId);
+            var like = await usersRepository.GetLike(id, recipientId);
 
-            var likedUser = repo.GetUser(recipientId, false).Result.KnownAs;
+            var likedUser = usersRepository.GetUser(recipientId, false).Result.KnownAs;
 
             if (like != null) return BadRequest("You already like " + likedUser);
 
-            if (await repo.GetUser(recipientId, false) == null) return NotFound();
+            if (await usersRepository.GetUser(recipientId, false) == null) return NotFound();
 
             like = new Like
             {
@@ -89,9 +93,9 @@ namespace DatingApp.API.Controllers
                 LikedId = recipientId
             };
 
-            repo.Add(like);
+            repository.Add(like);
 
-            if (await repo.SaveAll()) return Ok();
+            if (await repository.SaveAll()) return Ok();
 
             return BadRequest("Failed to like user" + likedUser);
         }

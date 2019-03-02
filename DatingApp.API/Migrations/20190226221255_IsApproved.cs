@@ -7,8 +7,8 @@ namespace DatingApp.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsApproved",
-                table: "Photos",
+                "IsApproved",
+                "Photos",
                 nullable: false,
                 defaultValue: false);
         }
@@ -16,8 +16,8 @@ namespace DatingApp.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsApproved",
-                table: "Photos");
+                "IsApproved",
+                "Photos");
         }
     }
 }

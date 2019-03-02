@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/_models/user';
 import { AdminService } from 'src/app/_services/admin.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -11,21 +11,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit {
-  users: User[];
+  @Input() users: any;
   bsModalRef: BsModalRef;
   constructor(private adminService: AdminService, private modalService: BsModalService, private toastr: ToastrService) { }
 
-  ngOnInit() {
-    this.getUsersWithRoles();
-  }
-
-  getUsersWithRoles() {
-    this.adminService.getUsersWithRoles().subscribe((users: User[]) => {
-      this.users = users;
-    }, error => {
-      this.toastr.error(error);
-    });
-  }
+  ngOnInit() { }
 
   editRolesModal(user: User) {
     const initialState = {

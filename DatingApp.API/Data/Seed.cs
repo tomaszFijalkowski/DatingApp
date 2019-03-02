@@ -10,8 +10,8 @@ namespace DatingApp.API.Data
 {
     public class Seed
     {
-        private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
+        private readonly UserManager<User> userManager;
 
         public Seed(UserManager<User> userManager, RoleManager<Role> roleManager)
         {
@@ -33,16 +33,12 @@ namespace DatingApp.API.Data
                 new Role {Name = "VIP"}
             };
 
-            foreach (var role in roles)
-            {
-                roleManager.CreateAsync(role).Wait();
-            }
+            foreach (var role in roles) roleManager.CreateAsync(role).Wait();
 
             foreach (var user in users)
             {
                 user.Photos.SingleOrDefault().IsApproved = true;
                 userManager.CreateAsync(user, "password").Wait();
-                userManager.AddToRoleAsync(user, "Member").Wait();
             }
 
             var adminUser = new User
@@ -50,7 +46,7 @@ namespace DatingApp.API.Data
                 UserName = "Admin"
             };
 
-            IdentityResult result = userManager.CreateAsync(adminUser, "password").Result;
+            var result = userManager.CreateAsync(adminUser, "password").Result;
 
             if (result.Succeeded)
             {

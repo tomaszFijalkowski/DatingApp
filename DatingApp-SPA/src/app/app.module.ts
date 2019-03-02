@@ -41,6 +41,8 @@ import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { PhotoManagementResolver } from './_resolvers/photo-management.resolver';
+import { UserManagementResolver } from './_resolvers/user-management.resolver';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -106,6 +108,8 @@ export function tokenGetter() {
       PreventUnsavedChanged,
       ListsResolver,
       MessagesResolver,
+      PhotoManagementResolver,
+      UserManagementResolver,
       AdminService
    ],
    entryComponents: [
@@ -116,4 +120,3 @@ export function tokenGetter() {
    ]
 })
 export class AppModule { }
-

@@ -2,3 +2,41 @@ img.img-thumbnail {
     height: 150;
     min-width: 150 !important;
 }
+
+.card:hover img {
+    transition-duration: 400ms;
+    transition-timing-function: ease-out;
+    opacity: 0.66;
+}
+
+.card img {
+    transition-duration: 400ms;
+    transition-timing-function: ease-out;
+}
+
+.card-img-wrapper {
+    border-top-left-radius: calc(0.75rem - 1px);
+    border-top-right-radius: calc(0.75rem - 1px);
+    overflow: hidden;
+    position: relative;
+    background-color: black;
+}
+
+.member-icons {
+    position: absolute;
+    bottom: -30%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+}
+
+.card:hover .member-icons {
+    bottom: 0;
+    opacity: 1;
+}
+
+.animate {
+    transition: all 0.2s ease-in-out;
+}
