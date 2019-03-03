@@ -3,18 +3,23 @@
     <h4 class="mt-4">Management Panel</h4>
     <hr>
   </div>
-  <div class="card tab-panel mb-4 pt-2">
-    <tabset class="member-tabset">
-      <tab heading="User Management" *appHasRole="['Admin']">
-        <div class="container mt-2">
-          <app-user-management [users]="users"></app-user-management>
-        </div>
-      </tab>
-      <tab heading="Photo Management" *appHasRole="['Admin', 'Moderator']">
-        <div class="mt-2">
-        <app-photo-management [photos]="photos"></app-photo-management>
-        </div>
-      </tab>
-    </tabset>
+  <div class="card">
+    <div class="card-body pb-1">
+      <div class="tab-panel mb-4 pt-2 pb-0">
+        <tabset class="member-tabset">
+          <tab heading="User Management" *appHasRole="['Admin']">
+            <div class="container mt-2">
+              <app-user-management [users]="users"></app-user-management>
+            </div>
+          </tab>
+          <tab heading="Photo Management" *appHasRole="['Admin', 'Moderator']">
+            <div class="mt-2">
+              <app-photo-management [photos]="photos"></app-photo-management>
+            </div>
+          </tab>
+        </tabset>
+      </div>
+      <div class="card-footer mr-2 ml-2 p-0"></div>
+    </div>
   </div>
 </div>

@@ -1,6 +1,5 @@
 img.img-thumbnail {
-    height: 100px;
-    min-width: 100px !important;
+    min-width: 135px;
 }
 
 .my-drop-zone {
@@ -18,26 +17,57 @@ input[type=file] {
     color: transparent;
 }
 
-.pending {
-    margin-bottom: 92px;
-    margin-left: 38px;
-}
-
-.main {
-    margin-bottom: 92px;
-    margin-left: 60px;
-}
-
 .not-approved {
     opacity: 0.2;
 }
 
+.not-approved-wrapper {
+    background-color: #fff !important;
+}
+
 .img-wrapper {
-    min-height: 164.86px;
     position: relative;
 }
 
 .img-text {
     position: absolute;
-    bottom: 30%;
+    opacity: 1;
+    z-index: 2;
+}
+
+.card:hover img {
+    transition-duration: 400ms;
+    transition-timing-function: ease-out;
+    opacity: 0.66;
+}
+
+.card img {
+    transition-duration: 400ms;
+    transition-timing-function: ease-out;
+}
+
+.card-img-wrapper {
+    border-radius: calc(0.75rem - 1px);
+    overflow: hidden;
+    position: relative;
+    background-color: black;
+}
+
+.member-icons {
+    position: absolute;
+    bottom: -30%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+}
+
+.card:hover .member-icons {
+    bottom: 0;
+    opacity: 1;
+}
+
+.animate {
+    transition: all 0.2s ease-in-out;
 }

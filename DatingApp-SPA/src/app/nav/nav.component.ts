@@ -23,7 +23,7 @@ export class NavComponent implements OnInit {
     this.authService.login(this.model).subscribe(next => {
       this.toastr.info('Logged in successfully');
     }, error => {
-      error === 'Unauthorized' ? this.toastr.error('Invalid Username or Password') : this.toastr.error(error);
+      this.toastr.error(error === 'Unauthorized' ? 'Invalid Username or Password' : 'Failed to login' );
     }, () => {
       this.router.navigate(['/members']);
     });

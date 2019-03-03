@@ -5,7 +5,8 @@
   <div class="row mb-4">
     <div class="col-sm-4">
       <div class="card">
-        <img class="card-img-top img-thumbnail p-0" src="{{user.photoUrl || '../../../assets/user.png'}}" alt="{{user.knownAs}}">
+        <img class="card-img-top img-thumbnail img-no-padding" src="{{user.photoUrl || '../../../assets/user.png'}}"
+          alt="{{user.knownAs}}">
         <div class="card-body">
           <div>
             <strong>Location:</strong>
@@ -27,35 +28,39 @@
             <p>{{user.created | date: 'mediumDate'}}</p>
           </div>
         </div>
-        <div class="card-footer">
+        <div class="card-footer mr-2 ml-2">
           <div class="btn-group d-flex mb-3">
-            <button class="btn btn-danger w-100 ml-2" (click)="sendLike(user.id)">Like</button>
-            <button class="btn btn-danger w-100 mr-2" (click)="selectTab(3)">Message</button>
+            <button class="btn btn-danger w-100 ml-1" (click)="sendLike(user.id)">Like</button>
+            <button class="btn btn-danger w-100 mr-1" (click)="selectTab(3)">Message</button>
           </div>
         </div>
       </div>
     </div>
     <div class="col-sm-8">
       <div class="card">
-        <div class="tab-panel">
-          <tabset class="member-tabset" #memberTabs>
-            <tab heading="About {{user.knownAs}}">
-              <h4 class="mb-2">Description</h4>
-              <p>{{user.introduction && user.introduction?.trim() !== '' ? user.introduction : 'Not specified'}}</p>
-              <h4 class="mb-2">Looking For</h4>
-              <p>{{user.lookingFor && user.lookingFor?.trim() !== '' ? user.lookingFor : 'Not specified'}}</p>
-            </tab>
-            <tab heading="Interests">
-              <h4 class="mb-2">Interests</h4>
-              <p>{{user.interests && user.interests?.trim() !== '' ? user.interests : 'Not specified'}}</p>
-            </tab>
-            <tab heading="Photos">
-              <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-            </tab>
-            <tab heading="Messages">
-              <app-member-messages [recipientId]="user.id"></app-member-messages>
-            </tab>
-          </tabset>
+        <div class="card-body">
+          <div class="tab-panel">
+            <tabset class="member-tabset" #memberTab>
+              <tab heading="About {{user.knownAs}}">
+                <h4 class="mb-2 mt-1">Description</h4>
+                <p>{{user.introduction && user.introduction?.trim() !== '' ? user.introduction : 'Not specified'}}</p>
+                <h4 class="mb-2 mt-4">Looking For</h4>
+                <p>{{user.lookingFor && user.lookingFor?.trim() !== '' ? user.lookingFor : 'Not specified'}}</p>
+              </tab>
+              <tab heading="Interests">
+                <h4 class="mb-2 mt-1">Interests</h4>
+                <p>{{user.interests && user.interests?.trim() !== '' ? user.interests : 'Not specified'}}</p>
+              </tab>
+              <tab heading="Photos" class="mt-2" *ngIf="showPhotosTab">
+                <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+              </tab>
+              <tab heading="Messages" *ngIf="true">
+                <app-member-messages [recipientId]="user.id"></app-member-messages>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+        <div class="card-footer mr-2 ml-2">
         </div>
       </div>
     </div>

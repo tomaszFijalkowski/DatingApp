@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UserManagementComponent implements OnInit {
   @Input() users: any;
   bsModalRef: BsModalRef;
+  hoveredIndex: number;
   constructor(private adminService: AdminService, private modalService: BsModalService, private toastr: ToastrService) { }
 
   ngOnInit() { }

@@ -17,6 +17,7 @@ export class MemberDetailComponent implements OnInit {
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
+  showPhotosTab: boolean;
 
   constructor(
     private userService: UserService,
@@ -35,14 +36,18 @@ export class MemberDetailComponent implements OnInit {
       this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
     });
 
+    this.showPhotosTab = this.user.photos.length > 0;
+
     this.galleryOptions = [
       {
-        width: '500px',
-        height: '500px',
+        width: '456.54px',
+        height: '456.54px',
         imagePercent: 100,
         thumbnailsColumns: 4,
         imageAnimation: NgxGalleryAnimation.Slide,
-        preview: false
+        preview: false,
+        imageArrowsAutoHide: true,
+        thumbnailsArrowsAutoHide: true,
       }
     ];
     this.galleryImages = this.getImages();

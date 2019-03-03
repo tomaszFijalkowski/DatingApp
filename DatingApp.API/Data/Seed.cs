@@ -38,15 +38,16 @@ namespace DatingApp.API.Data
             foreach (var user in users)
             {
                 user.Photos.SingleOrDefault().IsApproved = true;
-                userManager.CreateAsync(user, "password").Wait();
+                userManager.CreateAsync(user, "Passw0rd").Wait();
             }
 
             var adminUser = new User
             {
-                UserName = "Admin"
+                UserName = "Admin",
+                KnownAs = "Admin",                
             };
 
-            var result = userManager.CreateAsync(adminUser, "password").Result;
+            var result = userManager.CreateAsync(adminUser, "Passw0rd").Result;
 
             if (result.Succeeded)
             {

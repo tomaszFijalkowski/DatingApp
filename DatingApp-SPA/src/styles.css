@@ -4,8 +4,12 @@
 @import 'assets/css/paper-kit.css';
 @import 'assets/css/toastr.css';
 
-h3, hr {
+h3 {
   padding-bottom: 6px;
+}
+
+hr {
+  padding-bottom: 4px;
 }
 
 .ngx-gallery-icon-content {

@@ -5,12 +5,18 @@ import { UserService } from '../_services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from '../_services/auth.service';
 
 @Injectable()
 export class MemberDetailResolver implements Resolve<User> {
-    constructor(private userService: UserService, private router: Router, private toastr: ToastrService) { }
+    constructor(private userService: UserService, private router: Router,
+        private authService: AuthService, private toastr: ToastrService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<User> {
+        if (this.authService.currentUser.id === +route.params.id) {
+            this.router.navigate(['/member/edit']);
+        }
+
         return this.userService.getUser(route.params['id']).pipe(
             catchError(error => {
                 this.toastr.toastrConfig.preventDuplicates = true;

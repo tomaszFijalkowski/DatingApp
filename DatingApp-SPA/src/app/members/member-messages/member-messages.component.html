@@ -8,31 +8,43 @@
     <li *ngFor="let message of messages">
       <!-- to them -->
       <div *ngIf="message.senderId == recipientId">
-        <span class="chat-img float-left mt-2 mr-2">
-          <img src="{{message.senderPhotoUrl || '../../assets/user.png'}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
-        </span>
-        <div class="chat-body">
-          <strong class="primary-font">{{message.senderKnownAs}}</strong>
-          <p>{{message.content}}</p>
-          <small>
-            <span class="text-muted"><i class="fa fa-clock-o text-muted"></i> {{message.messageSent | timeAgo}}</span>
-          </small>
+        <div class="row">
+          <div class="col-1 mt-2">
+            <span class="chat-img mt-2">
+              <img src="{{message.senderPhotoUrl || '../../assets/user.png'}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
+            </span>
+          </div>
+          <div class="col-11 p-0">
+            <div class="chat-body ml-4 text-justify pr-3">
+              <strong class="primary-font">{{message.senderKnownAs}}</strong>
+              <p>{{message.content}}</p>
+              <small>
+                <span class="text-muted"><i class="fa fa-clock-o text-muted"></i> {{message.messageSent | timeAgo}}</span>
+              </small>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- to me -->
       <div *ngIf="message.senderId != recipientId">
-        <span class="chat-img float-left mt-2 mr-2">
-          <img src="{{message.senderPhotoUrl || '../../assets/user.png'}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
-        </span>
-        <div class="chat-body">
-          <strong class="primary-font">{{message.senderKnownAs}}</strong>
-          <p>{{message.content}}</p>
-          <small>
-            <span class="text-muted"><i class="fa fa-clock-o text-muted"></i> {{message.messageSent | timeAgo}}</span>
-            <span *ngIf="message.isRead" class="text-success"> (Read {{message.dateRead | timeAgo}})</span>
-            <span *ngIf="!message.isRead" class="text-danger"> (Unread)</span>
-          </small>
+        <div class="row">
+          <div class="col-1 mt-2">
+            <span class="chat-img mt-2">
+              <img src="{{message.senderPhotoUrl || '../../assets/user.png'}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
+            </span>
+          </div>
+          <div class="col-11 p-0">
+            <div class="chat-body ml-4 text-justify pr-3">
+              <strong class="primary-font">{{message.senderKnownAs}}</strong>
+              <p>{{message.content}}</p>
+              <small>
+                <span class="text-muted"><i class="fa fa-clock-o text-muted"></i> {{message.messageSent | timeAgo}}</span>
+                <span *ngIf="message.isRead" class="text-success"> (Read {{message.dateRead | timeAgo}})</span>
+                <span *ngIf="!message.isRead" class="text-danger"> (Unread)</span>
+              </small>
+            </div>
+          </div>
         </div>
       </div>
     </li>

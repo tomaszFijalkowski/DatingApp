@@ -1,20 +1,46 @@
 <div class="row mt-1 mb-2">
-  <div class="col-sm-2 p-0 ml-3 img-wrapper" *ngFor="let photo of photos">
-    <img src="{{photo.url}}" class="img-thumbnail p-0 mb-2" alt="" [ngClass]="!photo.isApproved && 'not-approved'">
-    <div class="img-text pending" *ngIf="!photo.isApproved">
-      <span class="label label-warning">Pending</span>
+  <div class="col-sm-3" *ngFor="let photo of photos">
+
+    <div class="card mb-4">
+      <div class="card-img-wrapper text-right" [ngClass]="!photo.isApproved && 'not-approved-wrapper'">
+        <div class="img-text" *ngIf="!photo.isApproved">
+          <span class="label label-warning">Pending</span>
+        </div>
+        <div class="img-text" *ngIf="photo.isMain">
+          <span class="label label-success">Main</span>
+        </div>
+        <img class="card-img-top" src="{{photo.url}}" alt="" [ngClass]="!photo.isApproved && 'not-approved'">
+        <ul class="list-inline member-icons animate text-center">
+          <li class="list-inline-item" *ngIf="photo.isApproved"><button class="btn btn-success pl-2 pr-2 pt-1 pb-1"
+              (click)="setMainPhoto(photo)" [disabled]="photo.isMain">
+              <i class="fa fa-user-circle"></i></button></li>
+          <li class="list-inline-item" *ngIf="!photo.isApproved"><button class="btn btn-warning pl-2 pr-2 pt-1 pb-1"
+              (click)="deletePhoto(photo.id)">
+              <i class="fa fa-ban"></i></button></li>
+          <li class="list-inline-item" *ngIf="photo.isApproved"><button class="btn btn-danger pl-2 pr-2 pt-1 pb-1"
+              (click)="deletePhoto(photo.id)">
+              <i class="fa fa-trash"></i></button></li>
+        </ul>
+      </div>
     </div>
-    <div class="img-text main" *ngIf="photo.isMain">
-      <span class="label label-success">Main</span>
-    </div>
-    <div class="btn-group w-100 text-center mb-4 pr-3">
-      <button type="button" class="btn btn-sm btn-success" (click)="setMainPhoto(photo)" [disabled]="photo.isMain"
-        *ngIf="photo.isApproved">Main</button>
-      <button type="button" class="btn btn-sm btn-warning" (click)="deletePhoto(photo.id)" *ngIf="!photo.isApproved">
-        <i class="fa fa-ban"></i> Cancel</button>
-      <button type="button" class="btn btn-sm btn-danger" (click)="deletePhoto(photo.id)" *ngIf="photo.isApproved">
-        <i class="fa fa-trash"></i></button>
-    </div>
+
+    <!-- <div class="img-wrapper">
+      <img src="{{photo.url}}" class="img-thumbnail img-no-padding mb-0" alt="" [ngClass]="!photo.isApproved && 'not-approved'">
+      <div class="img-text pending" *ngIf="!photo.isApproved">
+        <span class="label label-warning">Pending</span>
+      </div>
+      <div class="img-text main" *ngIf="photo.isMain">
+        <span class="label label-success">Main</span>
+      </div>
+      <div class="btn-group text-center photo-editor-icons animate mb-4 w-100">
+        <button type="button" class="btn btn-sm btn-success" (click)="setMainPhoto(photo)" [disabled]="photo.isMain"
+          *ngIf="photo.isApproved">Main</button>
+        <button type="button" class="btn btn-sm btn-warning" (click)="deletePhoto(photo.id)" *ngIf="!photo.isApproved">
+          <i class="fa fa-ban"></i> Cancel</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)="deletePhoto(photo.id)" *ngIf="photo.isApproved">
+          <i class="fa fa-trash"></i></button>
+      </div>
+    </div> -->
   </div>
 </div>
 

@@ -33,6 +33,11 @@ export class MemberEditComponent implements OnInit {
     this.toastr.toastrConfig.preventDuplicates = true;
   }
 
+  ngOnDestroy() {
+    this.toastr.toastrConfig.disableTimeOut = false;
+    this.toastr.clear();
+  }
+
   updateUser() {
     this.toastr.clear();
     this.toastr.toastrConfig.easeTime = 300;

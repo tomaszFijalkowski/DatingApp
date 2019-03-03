@@ -23,6 +23,13 @@ export class PhotoEditorComponent implements OnInit {
 
   ngOnInit() {
     this.initializeUploader();
+    this.sortPhotos();
+  }
+
+  private sortPhotos() {
+    this.photos.sort((a, b) => {
+      return a.isApproved > b.isApproved ? -1 : a.isMain ? -1 : 1;
+    });
   }
 
   fileOverBase(e: any): void {
@@ -79,16 +86,16 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   deletePhoto(id: number) {
-      this.userService.deletePhoto(this.authService.decodedToken.nameid, id).subscribe(() => {
-        if (this.photos.find(p => p.id === id).isMain) {
-          this.authService.changeMemberPhoto(null);
-          this.authService.currentUser.photoUrl = null;
-          localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
-        }
-        this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
-        this.toastr.info('Photo has been deleted');
-      }, error => {
-        this.toastr.error('Failed to delete the photo');
-      });
+    this.userService.deletePhoto(this.authService.decodedToken.nameid, id).subscribe(() => {
+      if (this.photos.find(p => p.id === id).isMain) {
+        this.authService.changeMemberPhoto(null);
+        this.authService.currentUser.photoUrl = null;
+        localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
+      }
+      this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
+      this.toastr.info('Photo has been deleted');
+    }, error => {
+      this.toastr.error('Failed to delete the photo');
+    });
   }
 }

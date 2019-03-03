@@ -9,3 +9,7 @@ table {
 td {
     vertical-align: middle;
 }
+
+th, td {
+    word-break: break-all;
+}
