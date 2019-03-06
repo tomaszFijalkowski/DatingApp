@@ -40,7 +40,7 @@
       <div class="card">
         <div class="card-body">
           <div class="tab-panel">
-            <tabset class="member-tabset" #memberTab>
+            <tabset class="member-tabset" #memberTabs>
               <tab heading="About {{user.knownAs}}">
                 <h4 class="mb-2 mt-1">Description</h4>
                 <p>{{user.introduction && user.introduction?.trim() !== '' ? user.introduction : 'Not specified'}}</p>
@@ -51,10 +51,11 @@
                 <h4 class="mb-2 mt-1">Interests</h4>
                 <p>{{user.interests && user.interests?.trim() !== '' ? user.interests : 'Not specified'}}</p>
               </tab>
-              <tab heading="Photos" class="mt-2" *ngIf="showPhotosTab">
+              <tab heading="Photos" class="mt-2" [ngClass]="{nophotos: user.photos.length === 0}">
+                <p *ngIf="user.photos.length === 0">No photos to show...</p>
                 <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
               </tab>
-              <tab heading="Messages" *ngIf="true">
+              <tab heading="Messages">
                 <app-member-messages [recipientId]="user.id"></app-member-messages>
               </tab>
             </tabset>

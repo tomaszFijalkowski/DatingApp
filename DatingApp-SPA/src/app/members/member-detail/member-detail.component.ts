@@ -17,7 +17,6 @@ export class MemberDetailComponent implements OnInit {
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
-  showPhotosTab: boolean;
 
   constructor(
     private userService: UserService,
@@ -35,8 +34,6 @@ export class MemberDetailComponent implements OnInit {
       const selectedTab = params['tab'];
       this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
     });
-
-    this.showPhotosTab = this.user.photos.length > 0;
 
     this.galleryOptions = [
       {

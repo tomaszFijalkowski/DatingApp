@@ -92,8 +92,8 @@ export function tokenGetter() {
       JwtModule.forRoot({
          config: {
             tokenGetter: tokenGetter,
-            whitelistedDomains: ['localhost:5000'],
-            blacklistedRoutes: ['localhost:5000/api/auth']
+            whitelistedDomains: ['localhost:5000', 'da-app-106.azurewebsites.net'],
+            blacklistedRoutes: ['localhost:5000/api/auth', 'da-app-106.azurewebsites.net/api/auth']
          }
       })
    ],
