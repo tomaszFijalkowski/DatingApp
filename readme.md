@@ -27,12 +27,12 @@ A single page application made with Angular and ASP.NET Core as the backend. It 
 
 Members screen:
 
-![screen1](screenshots/members.png)
+![Members](screenshots/Members.png)
 
 Messages screen:
 
-![screen2](screenshots/messages.png)
+![Messages](screenshots/Messages.png)
 
 Edit profile screen:
 
-![screen2](screenshots/edit.png)
+![Edit](screenshots/Edit.png)
