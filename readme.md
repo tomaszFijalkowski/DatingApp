@@ -4,10 +4,6 @@
 
 A single page application made with Angular and ASP.NET Core as the backend. It allows users to login, browse other members' profiles, follow them and chat.
 
-### How to run
-
-[Deployed on Azure Websites](https://da-app-106.azurewebsites.net/) (free version currently expired)
-
 ### Technology
 
 ASP.NET Core 2.2.0
